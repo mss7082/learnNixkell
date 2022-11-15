@@ -1,4 +1,4 @@
-module Wordle () where
+module Wordle where
 
 import qualified Data.Map.Strict as M
 import qualified Data.Set as S
@@ -12,6 +12,9 @@ data LetterInformation
   | LetterNotInLocation (S.Set Location) -- set of places letter cannot appear.
 
 data State = MkState (M.Map Char LetterInformation)
+
+lettersInWord :: WordleWord -> S.Set Char
+lettersInWord word = V.foldl' (flip S.insert) S.empty (getLetters word)
 
 -- Set of all letters that are required, according to the state
 requiredLetters :: State -> S.Set Char
@@ -41,9 +44,7 @@ validWord state@(MkState mapping) word = noLettersInBadLocations word && allRequ
 
     -- All the required letters are indeed in the word
     allRequiredLetters :: WordleWord -> Bool
-    allRequiredLetters word = theRequiredLetters `S.isSubsetOf` lettersInWord
-      where
-        lettersInWord = V.foldl' (flip S.insert) S.empty (getLetters word)
+    allRequiredLetters word = theRequiredLetters `S.isSubsetOf` lettersInWord word
 
 filterWords :: State -> V.Vector WordleWord -> V.Vector WordleWord
 filterWords state = V.filter (validWord state)

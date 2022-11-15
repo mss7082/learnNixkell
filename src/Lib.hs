@@ -2,14 +2,7 @@
 {-# LANGUAGE OverloadedLists #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Lib
-  ( WordleWord,
-    getLetters,
-    finalWords,
-    guessWords,
-    Vec5,
-  )
-where
+module Lib where
 
 import Data.String
 import Data.Vector
